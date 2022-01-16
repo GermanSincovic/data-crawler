@@ -17,7 +17,7 @@ import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-@Log
+@Slf4j
 public class Request {
 
   private final HttpClient httpClient;
@@ -90,7 +90,7 @@ public class Request {
     try {
       response = new Response(httpClient.execute(request));
     } catch (IOException e) {
-      log.warning(e.getMessage());
+      log.warn(e.getMessage());
     }
     return response;
   }
