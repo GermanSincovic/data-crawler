@@ -23,9 +23,7 @@ public class MonoTest {
       System.out.println(currency.toString());
     }
 
-    System.getProperty("mono.api.token");
-
-    System.out.println("TEST RUN");
+    System.out.println(System.getProperty("mono.api.token"));
   }
 
 }
