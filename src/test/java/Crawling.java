@@ -4,6 +4,6 @@ public class Crawling {
 
   @Test
   public static void main(){
-    MonoTest.asdf();
+    MonoTest.currency();
   }
 }

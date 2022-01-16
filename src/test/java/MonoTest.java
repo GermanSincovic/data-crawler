@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 public class MonoTest {
 
   @Test
-  public static void asdf(){
+  public static void currency(){
     //    Currency[] currencies = new MonoApiClient().getBankCurrency();
     String rawBody =
             "[\n"
@@ -23,7 +23,7 @@ public class MonoTest {
       System.out.println(currency.toString());
     }
 
-    System.getenv("mono.api.token");
+    System.getProperty("mono.api.token");
 
     System.out.println("TEST RUN");
   }
