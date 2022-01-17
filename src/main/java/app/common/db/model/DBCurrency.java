@@ -16,8 +16,8 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 @ToString
 public class DBCurrency {
 
-  @ColumnName("datetime")
-  private Long datetime;
+  @ColumnName("created")
+  private Long created;
 
   @ColumnName("USD_buy")
   private Double usdBuy;
