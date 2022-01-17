@@ -9,7 +9,6 @@ import org.jdbi.v3.core.mapper.reflect.ColumnName;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
-import org.joda.time.DateTime;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +17,7 @@ import org.joda.time.DateTime;
 public class DBCurrency {
 
   @ColumnName("datetime")
-  private DateTime datetime;
+  private Long datetime;
 
   @ColumnName("USD_buy")
   private Double usdBuy;

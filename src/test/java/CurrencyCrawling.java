@@ -33,7 +33,7 @@ public class CurrencyCrawling {
         getByCodes(CurrencyCodeISO4217Enum.EUR, CurrencyCodeISO4217Enum.UAH, bankCurrencies);
 
     DBCurrency dbCurrency = new DBCurrency();
-    dbCurrency.setDatetime(DateTime.now());
+    dbCurrency.setDatetime(DateTime.now().getMillis());
     dbCurrency.setUsdBuy(bankCurrencyUSD.getRateBuy());
     dbCurrency.setUsdSell(bankCurrencyUSD.getRateSell());
     dbCurrency.setEurBuy(bankCurrencyEUR.getRateBuy());
