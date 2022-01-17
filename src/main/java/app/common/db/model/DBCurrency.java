@@ -40,8 +40,8 @@ public class DBCurrency {
 
     @SqlUpdate(
         "INSERT INTO currency "
-            + "(datetime, USD_buy, USD_sell, EUR_buy, EUR_sell) "
-            + "VALUES (:datetime, :usdBuy, :usdSell, :eurBuy, :eurSell)")
+            + "(created, USD_buy, USD_sell, EUR_buy, EUR_sell) "
+            + "VALUES (:created, :usdBuy, :usdSell, :eurBuy, :eurSell)")
     void insert(@BindBean DBCurrency currency);
   }
 }
