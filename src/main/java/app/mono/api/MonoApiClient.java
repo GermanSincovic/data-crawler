@@ -2,6 +2,8 @@ package app.mono.api;
 
 import app.common.api.Request;
 import app.mono.model.BankCurrency;
+import app.mono.model.BankStatement;
+import app.mono.model.BankUserInfo;
 
 public class MonoApiClient {
 
@@ -14,7 +16,18 @@ public class MonoApiClient {
     request.setHeader("X-Token", System.getProperty("mono.api.token"));
   }
 
+  public BankUserInfo getUserInfo(){
+    String url = String.format("%s/personal/client-info", BASE_URL);
+    return request.to(url).get().read(BankUserInfo.class);
+  }
+
   public BankCurrency[] getBankCurrency() {
-    return request.to(BASE_URL + "/bank/currency").get().read(BankCurrency[].class);
+    String url = String.format("%s/bank/currency", BASE_URL);
+    return request.to(url).get().read(BankCurrency[].class);
+  }
+
+  public BankStatement[] getBankStatement(String account, String from, String to) {
+    String url = String.format("%s/personal/statement/%s/%s/%s", BASE_URL, account, from, to);
+    return request.to(url).get().read(BankStatement[].class);
   }
 }
