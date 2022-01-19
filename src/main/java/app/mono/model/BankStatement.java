@@ -1,5 +1,6 @@
 package app.mono.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BankStatement {
 
   @JsonProperty("id")
@@ -22,8 +24,11 @@ public class BankStatement {
   @JsonProperty("mcc")
   private String mcc;
 
+  @JsonProperty("originalMcc")
+  private String originalMcc;
+
   @JsonProperty("hold")
-  private String hold;
+  private Boolean hold;
 
   @JsonProperty("amount")
   private BigDecimal amount;

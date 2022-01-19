@@ -1,7 +1,7 @@
 package app.common.api;
 
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
 import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.*;
@@ -10,20 +10,19 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
 
-@Slf4j
+@Log4j
 public class Request {
 
   private final HttpClient httpClient;
   private final List<Header> headerList;
 
-  private String URL;
+  private String url;
   private StringEntity body;
 
   public Request() {
@@ -31,9 +30,9 @@ public class Request {
     headerList = new ArrayList<>();
   }
 
-  public Request to(String URL) {
-    this.URL = URL;
-    log.info(this.URL);
+  public Request to(String url) {
+    this.url = url;
+    log.info(this.url);
     return this;
   }
 
@@ -56,12 +55,12 @@ public class Request {
   }
 
   public Response get() {
-    HttpGet request = new HttpGet(this.URL);
+    HttpGet request = new HttpGet(this.url);
     return execute(request);
   }
 
   public Response post() {
-    HttpPost request = new HttpPost(this.URL);
+    HttpPost request = new HttpPost(this.url);
     if (nonNull(body)) {
       request.setEntity(body);
     }
@@ -69,7 +68,7 @@ public class Request {
   }
 
   public Response put() {
-    HttpPut request = new HttpPut(this.URL);
+    HttpPut request = new HttpPut(this.url);
     if (nonNull(body)) {
       request.setEntity(body);
     }
@@ -77,11 +76,13 @@ public class Request {
   }
 
   public Response delete() {
-    HttpDelete request = new HttpDelete(this.URL);
+    HttpDelete request = new HttpDelete(this.url);
     return execute(request);
   }
 
+  @SneakyThrows
   private Response execute(HttpRequestBase request) {
+    log.info(url);
     log.info(request.getMethod());
     if (!headerList.isEmpty()) {
       request.setHeaders(headerList.toArray(new Header[0]));

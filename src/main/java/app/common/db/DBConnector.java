@@ -1,7 +1,7 @@
 package app.common.db;
 
 import com.mysql.cj.jdbc.Driver;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.SqlLogger;
 import org.jdbi.v3.core.statement.StatementContext;
@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 
 import static java.lang.System.getProperty;
 
-@Slf4j
+@Log4j
 public class DBConnector {
 
   private static final String DATABASE_URL = getProperty("db.url");
@@ -31,23 +31,24 @@ public class DBConnector {
       Driver driver = new Driver();
       DriverManager.registerDriver(driver);
       Connection connection =
-              DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASS);
+          DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASS);
       jdbi = Jdbi.create(connection);
       jdbi.installPlugin(new SqlObjectPlugin());
       jdbi.installPlugin(new JodaTimePlugin());
       jdbi.setSqlLogger(
-              new SqlLogger() {
-                @Override
-                public void logAfterExecution(StatementContext context) {
-                  log.info(
-                          "\n{}\nQUERY STATEMENT: [{}]\nQUERY PARAMS: [{}]\nEXECUTION TIME: [{}ms]\n{}",
-                          "================================================",
-                          context.getParsedSql().getSql(),
-                          context.getBinding().toString(),
-                          context.getElapsedTime(ChronoUnit.MILLIS),
-                          "================================================");
-                }
-              });
+          new SqlLogger() {
+            @Override
+            public void logAfterExecution(StatementContext context) {
+              log.info(
+                  String.format(
+                      "%n%s%nQUERY STATEMENT: [%s]%nQUERY PARAMS: [%s]%nEXECUTION TIME: [%sms]%n%s",
+                      "================================================",
+                      context.getParsedSql().getSql(),
+                      context.getBinding().toString(),
+                      context.getElapsedTime(ChronoUnit.MILLIS),
+                      "================================================"));
+            }
+          });
     } catch (SQLException e) {
       log.error(e.getMessage());
     }

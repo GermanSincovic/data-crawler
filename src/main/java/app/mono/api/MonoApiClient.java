@@ -16,7 +16,7 @@ public class MonoApiClient {
     request.setHeader("X-Token", System.getProperty("mono.api.token"));
   }
 
-  public BankUserInfo getUserInfo(){
+  public BankUserInfo getUserInfo() {
     String url = String.format("%s/personal/client-info", BASE_URL);
     return request.to(url).get().read(BankUserInfo.class);
   }
@@ -26,8 +26,12 @@ public class MonoApiClient {
     return request.to(url).get().read(BankCurrency[].class);
   }
 
-  public BankStatement[] getBankStatement(String account, String from, String to) {
+  public BankStatement[] getBankStatement(Integer account, Long from, Long to) {
     String url = String.format("%s/personal/statement/%s/%s/%s", BASE_URL, account, from, to);
     return request.to(url).get().read(BankStatement[].class);
+  }
+
+  public BankStatement[] getBankStatement(Long from, Long to) {
+    return getBankStatement(0, from, to);
   }
 }

@@ -1,22 +1,19 @@
-import app.common.db.DBConnector;
-import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.BeforeTest;
+import app.mono.api.MonoApiClient;
+import app.mono.model.BankStatement;
+import app.utils.JsonUtil;
+import lombok.extern.log4j.Log4j;
+import org.joda.time.DateTime;
 import org.testng.annotations.Test;
 
-@Slf4j
-public class StatementCrawling {
-
-  @BeforeTest
-  public static void before() {
-    try {
-      DBConnector.getInstance();
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
-  }
+@Log4j
+public class StatementCrawling extends Crawling {
 
   @Test
   public static void main() {
-
+    MonoApiClient monoApiClient = new MonoApiClient();
+    BankStatement[] data =
+        monoApiClient.getBankStatement(
+            DateTime.now().minusDays(30).getMillis(), DateTime.now().getMillis());
+    System.out.println(JsonUtil.toStr(data));
   }
 }

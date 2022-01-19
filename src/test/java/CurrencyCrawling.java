@@ -1,26 +1,15 @@
-import app.common.db.DBConnector;
 import app.common.db.model.DBCurrency;
 import app.mono.CurrencyCodeISO4217Enum;
 import app.mono.api.MonoApiClient;
 import app.mono.model.BankCurrency;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.joda.time.DateTime;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
-@Slf4j
-public class CurrencyCrawling {
-
-  @BeforeTest
-  public static void before() {
-    try {
-      DBConnector.getInstance();
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
-  }
+@Log4j
+public class CurrencyCrawling extends Crawling {
 
   @Test
   public static void main() {

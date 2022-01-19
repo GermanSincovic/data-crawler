@@ -7,7 +7,7 @@ public class JsonUtil {
 
   private JsonUtil() {}
 
-  public static String toString(Object obj) {
+  public static String toStr(Object obj) {
     ObjectMapper mapper = new ObjectMapper();
     String result = null;
     try {

@@ -10,8 +10,8 @@ import java.util.List;
 @ToString
 public class BankUserInfo {
 
-  @JsonProperty("id")
-  private String id;
+  @JsonProperty("clientId")
+  private String clientId;
 
   @JsonProperty("name")
   private String name;
@@ -19,7 +19,9 @@ public class BankUserInfo {
   @JsonProperty("webHookUrl")
   private String webHookUrl;
 
+  @JsonProperty("permissions")
+  private String permissions;
+
   @JsonProperty("accounts")
   private List<BankAccount> accounts;
-
 }

@@ -3,31 +3,34 @@ package app.common.api;
 import app.utils.JsonUtil;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static java.util.Objects.nonNull;
 
-@Slf4j
+@Log4j
 public class Response {
 
-  private final HttpResponse response;
+  private final HttpResponse httpResponse;
 
   @Getter private final int statusCode;
 
   @Getter private final HttpEntity body;
 
   public Response(@NonNull HttpResponse response) {
-    this.response = response;
-    this.statusCode = this.response.getStatusLine().getStatusCode();
-    this.body = this.response.getEntity();
+    this.httpResponse = response;
+    this.statusCode = this.httpResponse.getStatusLine().getStatusCode();
+    this.body = this.httpResponse.getEntity();
   }
 
   public <T> T read(Class<T> clazz) {
+    log.info(String.valueOf(httpResponse.getStatusLine().getStatusCode()));
+    log.info(Arrays.toString(httpResponse.getAllHeaders()));
     String rawBody = null;
     if (nonNull(getBody())) {
       try {
@@ -37,6 +40,11 @@ public class Response {
         e.printStackTrace();
       }
     }
-    return JsonUtil.toObject(rawBody, clazz);
+    try {
+      return JsonUtil.toObject(rawBody, clazz);
+    } catch (Exception e) {
+      log.info(rawBody);
+    }
+    return null;
   }
 }
