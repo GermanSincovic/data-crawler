@@ -1,5 +1,6 @@
 import app.common.db.model.DBStatement;
 import app.mono.CurrencyCodeISO4217;
+import app.mono.MccIso18245;
 import app.mono.api.MonoApiClient;
 import app.mono.model.BankStatement;
 import lombok.extern.log4j.Log4j;
@@ -30,8 +31,8 @@ public class StatementCrawlingIT extends Crawling {
               dbStatement.setId(bankStatement.getId());
               dbStatement.setTime(bankStatement.getTime());
               dbStatement.setDescription(bankStatement.getDescription());
-              dbStatement.setMcc(bankStatement.getMcc());
-              dbStatement.setOriginalMcc(bankStatement.getOriginalMcc());
+              dbStatement.setMcc(MccIso18245.getDescByCode(bankStatement.getMcc()));
+              dbStatement.setOriginalMcc(MccIso18245.getDescByCode(bankStatement.getOriginalMcc()));
               dbStatement.setHold(bankStatement.getHold());
               dbStatement.setAmount(
                   bankStatement.getAmount().divide(correction, 2, RoundingMode.CEILING));
