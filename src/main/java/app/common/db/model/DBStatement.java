@@ -30,7 +30,7 @@ public class DBStatement {
   @ColumnName("mcc")
   private String mcc;
 
-  @ColumnName("originalMcc")
+  @ColumnName("original_mcc")
   private String originalMcc;
 
   @ColumnName("hold")
@@ -39,16 +39,16 @@ public class DBStatement {
   @ColumnName("amount")
   private BigDecimal amount;
 
-  @ColumnName("operationAmount")
+  @ColumnName("operation_amount")
   private BigDecimal operationAmount;
 
-  @ColumnName("currencyCode")
-  private Integer currencyCode;
+  @ColumnName("currency_code")
+  private String currencyCode;
 
-  @ColumnName("commissionRate")
+  @ColumnName("commission_rate")
   private BigDecimal commissionRate;
 
-  @ColumnName("cashbackAmount")
+  @ColumnName("cashback_amount")
   private BigDecimal cashbackAmount;
 
   @ColumnName("balance")
@@ -57,13 +57,13 @@ public class DBStatement {
   @ColumnName("comment")
   private String comment;
 
-  @ColumnName("receiptId")
+  @ColumnName("receipt_id")
   private String receiptId;
 
-  @ColumnName("counterEdrpou")
+  @ColumnName("counter_edrpou")
   private String counterEdrpou;
 
-  @ColumnName("counterIban")
+  @ColumnName("counter_iban")
   private String counterIban;
 
   public static DBStatement.DBStatementDAO dao() {
@@ -73,12 +73,9 @@ public class DBStatement {
   @RegisterBeanMapper(DBStatement.class)
   public interface DBStatementDAO {
 
-//    TODO: Statement inserting with duplicate ignoring
-
-//    @SqlUpdate(
-//            "INSERT INTO currency "
-//                    + "(created, USD_buy, USD_sell, EUR_buy, EUR_sell) "
-//                    + "VALUES (:created, :usdBuy, :usdSell, :eurBuy, :eurSell)")
-//    void insert(@BindBean DBStatement statement);
+    @SqlUpdate(
+        "INSERT IGNORE INTO statements (id, time, description, mcc, original_mcc, hold, amount, operation_amount, currency_code, commission_rate, cashback_amount, balance, comment, receipt_id, counter_edrpou, counter_iban) "
+            + " VALUES(:id, :time, :description, :mcc, :originalMcc, :hold, :amount, :operationAmount, :currencyCode, :commissionRate, :cashbackAmount, :balance, :comment, :receiptId, :counterEdrpou, :counterIban)")
+    void insertIgnoreDuplicates(@BindBean DBStatement statement);
   }
 }

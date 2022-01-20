@@ -1,5 +1,5 @@
 import app.common.db.model.DBCurrency;
-import app.mono.CurrencyCodeISO4217Enum;
+import app.mono.CurrencyCodeISO4217;
 import app.mono.api.MonoApiClient;
 import app.mono.model.BankCurrency;
 import lombok.extern.log4j.Log4j;
@@ -17,9 +17,15 @@ public class CurrencyCrawling extends Crawling {
     BankCurrency[] bankCurrencies = monoApiClient.getBankCurrency();
 
     BankCurrency bankCurrencyUSD =
-        getByCodes(CurrencyCodeISO4217Enum.USD, CurrencyCodeISO4217Enum.UAH, bankCurrencies);
+        getByCodes(
+            CurrencyCodeISO4217.getCodeByName("USD"),
+            CurrencyCodeISO4217.getCodeByName("UAH"),
+            bankCurrencies);
     BankCurrency bankCurrencyEUR =
-        getByCodes(CurrencyCodeISO4217Enum.EUR, CurrencyCodeISO4217Enum.UAH, bankCurrencies);
+        getByCodes(
+            CurrencyCodeISO4217.getCodeByName("EUR"),
+            CurrencyCodeISO4217.getCodeByName("UAH"),
+            bankCurrencies);
 
     DBCurrency dbCurrency = new DBCurrency();
     dbCurrency.setCreated(DateTime.now().getMillis());
@@ -30,11 +36,10 @@ public class CurrencyCrawling extends Crawling {
     DBCurrency.dao().insert(dbCurrency);
   }
 
-  public static BankCurrency getByCodes(
-      CurrencyCodeISO4217Enum curA, CurrencyCodeISO4217Enum curB, BankCurrency[] source) {
+  public static BankCurrency getByCodes(Integer curA, Integer curB, BankCurrency[] source) {
     return Arrays.stream(source)
-        .filter(c -> c.getCurrencyCodeB().equals(curB.getCode()))
-        .filter(c -> c.getCurrencyCodeA().equals(curA.getCode()))
+        .filter(c -> c.getCurrencyCodeB().equals(curB))
+        .filter(c -> c.getCurrencyCodeA().equals(curA))
         .findFirst()
         .orElseThrow(NullPointerException::new);
   }
