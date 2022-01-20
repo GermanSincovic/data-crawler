@@ -3,7 +3,7 @@
 <suite name="Practice Suite">
     <test name="Test Basics 2">
         <classes>
-            <class name="StatementCrawling"/>
+            <class name="StatementCrawlingIT"/>
         </classes>
     </test>
 </suite>

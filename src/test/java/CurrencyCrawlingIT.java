@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 
 @Log4j
-public class CurrencyCrawling extends Crawling {
+public class CurrencyCrawlingIT extends Crawling {
 
   @Test
   public static void main() {
