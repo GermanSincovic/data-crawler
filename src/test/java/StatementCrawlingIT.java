@@ -35,10 +35,14 @@ public class StatementCrawlingIT extends Crawling {
               dbStatement.setHold(bankStatement.getHold());
               dbStatement.setAmount(
                   bankStatement.getAmount().divide(correction, 2, RoundingMode.CEILING));
-              dbStatement.setOperationAmount(bankStatement.getOperationAmount());
-              dbStatement.setCommissionRate(bankStatement.getCommissionRate());
-              dbStatement.setCashbackAmount(bankStatement.getCashbackAmount());
-              dbStatement.setBalance(bankStatement.getBalance());
+              dbStatement.setOperationAmount(
+                  bankStatement.getOperationAmount().divide(correction, 2, RoundingMode.CEILING));
+              dbStatement.setCommissionRate(
+                  bankStatement.getCommissionRate().divide(correction, 2, RoundingMode.CEILING));
+              dbStatement.setCashbackAmount(
+                  bankStatement.getCashbackAmount().divide(correction, 2, RoundingMode.CEILING));
+              dbStatement.setBalance(
+                  bankStatement.getBalance().divide(correction, 2, RoundingMode.CEILING));
               dbStatement.setComment(bankStatement.getComment());
               dbStatement.setReceiptId(bankStatement.getReceiptId());
               dbStatement.setCounterEdrpou(bankStatement.getCounterEdrpou());
