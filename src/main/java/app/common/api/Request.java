@@ -1,5 +1,6 @@
 package app.common.api;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import org.apache.http.Header;
@@ -23,6 +24,7 @@ public class Request {
   private final List<Header> headerList;
 
   private String url;
+  private GetParams getParams;
   private StringEntity body;
 
   public Request() {
@@ -31,9 +33,12 @@ public class Request {
   }
 
   public Request to(String url) {
-    this.url = url;
-    log.info(this.url);
+    this.url = url + getParams.build();
     return this;
+  }
+
+  public void setGetParams(GetParams getParams){
+    this.getParams = getParams;
   }
 
   public Request setHeader(Header header) {
@@ -82,8 +87,7 @@ public class Request {
 
   @SneakyThrows
   private Response execute(HttpRequestBase request) {
-    log.info(url);
-    log.info(request.getMethod());
+    log.info(request.getMethod() + " " + url);
     if (!headerList.isEmpty()) {
       request.setHeaders(headerList.toArray(new Header[0]));
     }
