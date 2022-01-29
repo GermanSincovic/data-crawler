@@ -42,8 +42,8 @@ public class DBRealty {
   public interface DBRealtyDAO {
 
     @SqlUpdate(
-        "INSERT IGNORE INTO statements (id, time, description, mcc, original_mcc, hold, amount, operation_amount, currency_code, commission_rate, cashback_amount, balance, comment, receipt_id, counter_edrpou, counter_iban) "
-            + " VALUES(:id, :time, :description, :mcc, :originalMcc, :hold, :amount, :operationAmount, :currencyCode, :commissionRate, :cashbackAmount, :balance, :comment, :receiptId, :counterEdrpou, :counterIban)")
+        "INSERT IGNORE INTO statements (id, state, city, category, realty_type, operation)"
+            + " VALUES(:id, :state, :city, :category, :realtyType, :operation)")
     void insertIgnoreDuplicates(@BindBean DBRealty realty);
   }
 }
