@@ -31,10 +31,6 @@ public class RiaApiClient {
 
   public RiaApiClient() {
     this.request = new Request();
-    this.getParams.set("with_newbuilds", "0");
-    this.getParams.set("price_cur", "1");
-    this.getParams.set("wo_dupl", "1");
-    this.getParams.set("limit", "1000");
   }
 
   public SearchResult search(
@@ -45,6 +41,10 @@ public class RiaApiClient {
     getParams.set("category", template.getCategory());
     getParams.set("realty_type", template.getRealtyType());
     getParams.set("operation", template.getOperation());
+    getParams.set("with_newbuilds", "0");
+    getParams.set("price_cur", "1");
+    getParams.set("wo_dupl", "1");
+    getParams.set("limit", "1000");
     if (nonNull(page)) getParams.set("page", page);
     request.setGetParams(getParams);
     return request.to(url).get().read(SearchResult.class);
