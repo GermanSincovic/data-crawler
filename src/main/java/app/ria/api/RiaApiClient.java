@@ -52,6 +52,7 @@ public class RiaApiClient {
 
   public RealtyInfo getInfoById(String id){
     String url = String.format("%s/v1/api/realty/final/%s", BASE_URL, id);
+    request.setGetParams(getParams);
     return request.to(url).get().read(RealtyInfo.class);
   }
 }

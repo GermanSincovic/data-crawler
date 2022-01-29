@@ -64,7 +64,7 @@ public class RealtyCrawlingIT {
       DBRealtyHistory dbRealtyHistory = new DBRealtyHistory();
       dbRealtyHistory.setRealtyId(realty.getId());
       dbRealtyHistory.setCurrencyType("USD");
-      dbRealtyHistory.setPrice(Integer.valueOf(realtyInfo.getRealty().getPriceObject().getPriceUSD()));
+      dbRealtyHistory.setPrice(Integer.valueOf(realtyInfo.getRealty().getPriceObject().getPriceUSD().replace(" ", "")));
       dbRealtyHistory.setTime(DateTime.now().getMillis());
 
       DBRealtyInfo dbRealtyInfo = new DBRealtyInfo();
