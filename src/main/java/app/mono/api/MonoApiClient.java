@@ -1,5 +1,6 @@
 package app.mono.api;
 
+import app.common.api.GetParams;
 import app.common.api.Request;
 import app.mono.model.BankCurrency;
 import app.mono.model.BankStatement;
@@ -14,6 +15,7 @@ public class MonoApiClient {
   public MonoApiClient() {
     this.request = new Request();
     request.setHeader("X-Token", System.getProperty("mono.api.token"));
+    request.setGetParams(new GetParams());
   }
 
   public BankUserInfo getUserInfo() {
