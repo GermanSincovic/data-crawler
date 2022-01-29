@@ -42,7 +42,7 @@ public class DBRealty {
   public interface DBRealtyDAO {
 
     @SqlUpdate(
-        "INSERT IGNORE INTO statements (id, state, city, category, realty_type, operation)"
+        "INSERT IGNORE INTO realty (id, state, city, category, realty_type, operation)"
             + " VALUES(:id, :state, :city, :category, :realtyType, :operation)")
     void insertIgnoreDuplicates(@BindBean DBRealty realty);
   }
