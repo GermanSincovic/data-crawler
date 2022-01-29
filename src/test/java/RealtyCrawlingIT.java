@@ -1,75 +1,49 @@
+import app.common.db.model.DBRealty;
 import app.ria.api.RiaApiClient;
-import app.ria.model.City;
-import app.ria.model.District;
 import app.ria.model.SearchResult;
-import app.ria.model.State;
 import lombok.extern.log4j.Log4j;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Log4j
 public class RealtyCrawlingIT {
 
   /** Область */
-  private static final String STATE = "Винницкая";
+  private static final Integer VIN_STATE = 1;
 
   /** Город */
-  private static final String CITY = "Винница";
+  private static final Integer VIN_CITY = 1;
 
-  @Test
-  public void some1() throws NotFound {
+  @DataProvider
+  public Object[][] categories() {
+    return new Object[][] {
+      {RiaApiClient.QueryTemplates.BUY_APARTMENT_TEMPLATE},
+      {RiaApiClient.QueryTemplates.BUY_HOUSE_TEMPLATE},
+      {RiaApiClient.QueryTemplates.BUY_PLOT_TEMPLATE},
+      {RiaApiClient.QueryTemplates.RENT_APARTMENT_TEMPLATE}
+    };
+  }
+
+  @Test(dataProvider = "categories")
+  public void main(RiaApiClient.QueryTemplates category) {
     RiaApiClient riaApiClient = new RiaApiClient();
 
-    State[] states = riaApiClient.getStates();
-
-    State state =
-        Arrays.stream(states)
-            .filter(s -> s.getName().equals(STATE))
-            .findFirst()
-            .orElseThrow(NotFound::new);
-
-    City[] cities = riaApiClient.getCities(state.getStateId());
-
-    City city =
-        Arrays.stream(cities)
-            .filter(c -> c.getName().equals(CITY))
-            .findFirst()
-            .orElseThrow(NotFound::new);
-
-    District[][] districts = riaApiClient.getDistricts(city.getCityId());
-    List<Integer> distIds =
-        Arrays.stream(districts)
-            .filter(
-                dist -> dist[0].getName().equals("Район") || dist[0].getName().equals("Пригород"))
-            .flatMap(Arrays::stream)
-            .map(District::getValue)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-    List<Long> realtyIds = new ArrayList<>();
-    for (Integer distId : distIds){
-      int page = 0;
-      while (true) {
-        //        SearchResult res = riaApiClient.search(state.getStateId(), city.getCityId(),
-        // distId, page);
-        //        realtyIds.addAll(res.getItems());
-        //        if(res.getItems().size() < 100) break;
-        System.out.print("state=" + state.getStateId());
-        System.out.print(" city=" + city.getCityId());
-        System.out.print(" distId=" + distId);
-        System.out.println(" page=" + page);
-        if(page >= 10) break;
-        page += 1;
-      }
+    int page = 0;
+    while (true) {
+      SearchResult res = riaApiClient.search(VIN_STATE, VIN_CITY, category, page++);
+      res.getItems()
+          .forEach(
+              item -> {
+                DBRealty realty = new DBRealty();
+                realty.setId(item);
+                realty.setState(VIN_STATE);
+                realty.setCity(VIN_CITY);
+                realty.setCategory(category.getCategory());
+                realty.setRealtyType(category.getRealtyType());
+                realty.setOperation(category.getOperation());
+                DBRealty.dao().insertIgnoreDuplicates(realty);
+              });
+      if (res.getItems().size() < 1000) break;
     }
-
-    System.out.println(realtyIds.size());
-
   }
 }

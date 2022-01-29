@@ -2,50 +2,54 @@ package app.ria.api;
 
 import app.common.api.GetParams;
 import app.common.api.Request;
-import app.ria.model.City;
-import app.ria.model.District;
 import app.ria.model.SearchResult;
-import app.ria.model.State;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import static java.util.Objects.nonNull;
 
 public class RiaApiClient {
 
-  private static final String BASE_URL = "https://developers.ria.com";
+  private static final String BASE_URL = "https://dom.ria.com";
+
+  @Getter
+  @AllArgsConstructor
+  public enum QueryTemplates {
+    BUY_APARTMENT_TEMPLATE(1, 2, 1),
+    RENT_APARTMENT_TEMPLATE(1, 2, 3),
+    BUY_HOUSE_TEMPLATE(4, 5, 1),
+    BUY_PLOT_TEMPLATE(24, 0, 1);
+
+    private Integer category;
+    private Integer realtyType;
+    private Integer operation;
+  }
+
+  private static final String BUY_APARTMENT_TEMPLATE = "category=1&realty_type=2&operation=1";
+  private static final String RENT_APARTMENT_TEMPLATE = "category=1&realty_type=2&operation=3";
+  private static final String BUY_HOUSE_TEMPLATE = "category=4&realty_type=5&operation=1";
+  private static final String BUY_PLOT_TEMPLATE = "category=24&realty_type=0&operation=1";
 
   private final Request request;
   private final GetParams getParams = new GetParams();
 
   public RiaApiClient() {
     this.request = new Request();
-    this.getParams.set("api_key", "yPBcd6ZsegCrHztkwqKmvCLTavB388M9bZ3S8b6T");
-    this.getParams.set("lang_id", 2);
+    this.getParams.set("with_newbuilds", "0");
+    this.getParams.set("price_cur", "1");
+    this.getParams.set("wo_dupl", "1");
+    this.getParams.set("limit", "1000");
   }
 
-  public State[] getStates() {
-    String url = String.format("%s/dom/states", BASE_URL);
-    request.setGetParams(getParams);
-    return request.to(url).get().read(State[].class);
-  }
-
-  public City[] getCities(Integer stateId) {
-    String url = String.format("%s/dom/cities/%s", BASE_URL, stateId);
-    request.setGetParams(getParams);
-    return request.to(url).get().read(City[].class);
-  }
-
-  public District[][] getDistricts(Integer cityId) {
-    String url = String.format("%s/dom/cities_districts/%s", BASE_URL, cityId);
-    request.setGetParams(getParams);
-    return request.to(url).get().read(District[][].class);
-  }
-
-  public SearchResult search(Integer stateId, Integer cityId, Integer districtId, Integer page){
-    String url = String.format("%s/dom/search/", BASE_URL);
+  public SearchResult search(
+      Integer stateId, Integer cityId, QueryTemplates template, Integer page) {
+    String url = String.format("%s/node/searchEngine/v2", BASE_URL);
     getParams.set("state_id", stateId);
     getParams.set("city_id", cityId);
-    getParams.set("d_id", cityId);
-    if(nonNull(page)) getParams.set("page", page);
+    getParams.set("category", template.getCategory());
+    getParams.set("realty_type", template.getRealtyType());
+    getParams.set("operation", template.getOperation());
+    if (nonNull(page)) getParams.set("page", page);
     request.setGetParams(getParams);
     return request.to(url).get().read(SearchResult.class);
   }
