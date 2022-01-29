@@ -29,8 +29,6 @@ public class Response {
   }
 
   public <T> T read(Class<T> clazz) {
-    log.info(String.valueOf(httpResponse.getStatusLine().getStatusCode()));
-    log.info(Arrays.toString(httpResponse.getAllHeaders()));
     String rawBody = null;
     if (nonNull(getBody())) {
       try {

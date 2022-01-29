@@ -66,10 +66,12 @@ public class RealtyCrawlingIT {
       dbRealtyHistory.setCurrencyType("USD");
       dbRealtyHistory.setPrice(Integer.valueOf(realtyInfo.getRealty().getPriceObject().getPriceUSD().replace(" ", "")));
       dbRealtyHistory.setTime(DateTime.now().getMillis());
+      DBRealtyHistory.dao().insertIgnoreDuplicates(dbRealtyHistory);
 
       DBRealtyInfo dbRealtyInfo = new DBRealtyInfo();
       dbRealtyInfo.setRealtyId(realty.getId());
       dbRealtyInfo.setLink(realtyInfo.getRealty().getUrl());
+      DBRealtyInfo.dao().insertIgnoreDuplicates(dbRealtyInfo);
     });
 
   }
