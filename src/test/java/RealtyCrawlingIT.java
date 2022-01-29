@@ -1,9 +1,15 @@
 import app.common.db.model.DBRealty;
+import app.common.db.model.DBRealtyHistory;
+import app.common.db.model.DBRealtyInfo;
 import app.ria.api.RiaApiClient;
+import app.ria.model.RealtyInfo;
 import app.ria.model.SearchResult;
 import lombok.extern.log4j.Log4j;
+import org.joda.time.DateTime;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 @Log4j
 public class RealtyCrawlingIT {
@@ -45,5 +51,26 @@ public class RealtyCrawlingIT {
               });
       if (res.getItems().size() < 1000) break;
     }
+  }
+
+  @Test
+  public void itemData() {
+    RiaApiClient riaApiClient = new RiaApiClient();
+    List<DBRealty> realtyList = DBRealty.dao().selectAll();
+
+    realtyList.forEach(realty -> {
+      RealtyInfo realtyInfo = riaApiClient.getInfoById(String.valueOf(realty.getId()));
+
+      DBRealtyHistory dbRealtyHistory = new DBRealtyHistory();
+      dbRealtyHistory.setRealtyId(realty.getId());
+      dbRealtyHistory.setCurrencyType("USD");
+      dbRealtyHistory.setPrice(Integer.valueOf(realtyInfo.getRealty().getPriceObject().getPriceUSD()));
+      dbRealtyHistory.setTime(DateTime.now().getMillis());
+
+      DBRealtyInfo dbRealtyInfo = new DBRealtyInfo();
+      dbRealtyInfo.setRealtyId(realty.getId());
+      dbRealtyInfo.setLink(realtyInfo.getRealty().getUrl());
+    });
+
   }
 }

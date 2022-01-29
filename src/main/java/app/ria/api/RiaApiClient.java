@@ -2,6 +2,7 @@ package app.ria.api;
 
 import app.common.api.GetParams;
 import app.common.api.Request;
+import app.ria.model.RealtyInfo;
 import app.ria.model.SearchResult;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,11 +26,6 @@ public class RiaApiClient {
     private Integer operation;
   }
 
-  private static final String BUY_APARTMENT_TEMPLATE = "category=1&realty_type=2&operation=1";
-  private static final String RENT_APARTMENT_TEMPLATE = "category=1&realty_type=2&operation=3";
-  private static final String BUY_HOUSE_TEMPLATE = "category=4&realty_type=5&operation=1";
-  private static final String BUY_PLOT_TEMPLATE = "category=24&realty_type=0&operation=1";
-
   private final Request request;
   private final GetParams getParams = new GetParams();
 
@@ -52,5 +48,10 @@ public class RiaApiClient {
     if (nonNull(page)) getParams.set("page", page);
     request.setGetParams(getParams);
     return request.to(url).get().read(SearchResult.class);
+  }
+
+  public RealtyInfo getInfoById(String id){
+    String url = String.format("%s/v1/api/realty/final/%s", BASE_URL, id);
+    return request.to(url).get().read(RealtyInfo.class);
   }
 }

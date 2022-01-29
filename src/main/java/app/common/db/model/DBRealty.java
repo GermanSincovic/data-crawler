@@ -8,7 +8,10 @@ import lombok.ToString;
 import org.jdbi.v3.core.mapper.reflect.ColumnName;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +43,9 @@ public class DBRealty {
 
   @RegisterBeanMapper(DBRealty.class)
   public interface DBRealtyDAO {
+
+    @SqlQuery("SELECT * FROM realty")
+    List<DBRealty> selectAll();
 
     @SqlUpdate(
         "INSERT IGNORE INTO realty (id, state, city, category, realty_type, operation)"
