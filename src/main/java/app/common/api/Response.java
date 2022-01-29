@@ -33,7 +33,7 @@ public class Response {
     if (nonNull(getBody())) {
       try {
         rawBody = EntityUtils.toString(getBody(), "UTF-8");
-        log.info(rawBody);
+        log.debug(rawBody);
       } catch (IOException e) {
         e.printStackTrace();
       }
