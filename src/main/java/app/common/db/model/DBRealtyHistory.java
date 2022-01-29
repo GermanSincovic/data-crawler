@@ -39,7 +39,7 @@ public class DBRealtyHistory {
   public interface DBRealtyHistoryDAO {
 
     @SqlUpdate(
-        "INSERT IGNORE INTO realty (realty_id, time, price, currency_type)"
+        "INSERT IGNORE INTO realty_history (realty_id, time, price, currency_type)"
             + " VALUES(:realtyId, :time, :price, :currencyType)")
     void insertIgnoreDuplicates(@BindBean DBRealtyHistory history);
   }

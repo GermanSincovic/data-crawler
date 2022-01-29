@@ -29,7 +29,7 @@ public class DBRealtyInfo {
   @RegisterBeanMapper(DBRealtyInfo.class)
   public interface DBRealtyInfoDAO {
 
-    @SqlUpdate("INSERT IGNORE INTO realty (realty_id, link) VALUES(:realtyId, :link)")
+    @SqlUpdate("INSERT IGNORE INTO realty_info (realty_id, link) VALUES(:realtyId, :link)")
     void insertIgnoreDuplicates(@BindBean DBRealtyInfo info);
   }
 }
