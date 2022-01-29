@@ -58,7 +58,7 @@ public class RealtyCrawlingIT {
     RiaApiClient riaApiClient = new RiaApiClient();
     List<DBRealty> realtyList = DBRealty.dao().selectAll();
 
-    realtyList.forEach(realty -> {
+    realtyList.parallelStream().forEach(realty -> {
       RealtyInfo realtyInfo = riaApiClient.getInfoById(String.valueOf(realty.getId()));
 
       DBRealtyHistory dbRealtyHistory = new DBRealtyHistory();
